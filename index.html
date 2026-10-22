@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ROUTE 운동 기록 앱 설치</title>
+<meta name="robots" content="noindex">
+<!--
+  ☠️ 왜 이 페이지가 있나 (2026-10-22 안드로이드 정식 출시)
+
+  스레드 프로필에는 **링크를 한 줄만** 걸 수 있다. 그런데 스토어는 둘이 됐다.
+  한쪽만 걸면 나머지 기기 사용자는 그 자리에서 막힌다.
+
+  그래서 이 페이지가 **고르게 한다.** 들어온 기기를 보고 맞는 쪽을 위로 올리되,
+  **둘 다 보여 준다** — 기기 판별(UA)은 틀릴 수 있고, 틀렸을 때 다른 쪽이 안 보이면
+  그 사람은 못 깐다.
+
+  ★ ct 값은 «어느 화면에서 왔나»로 갈린다 (추적링크 채널표 2026-09-28).
+      ?s=bio   프로필 바이오      → threads-bio
+      ?s=post  글·댓글            → threads
+      ?s=ebook 전자책 안          → ebook
+    모르는 값이 오면 bio 로 본다.
+
+  ☠️ 목적지를 쿼리로 받지 않는다. 받으면 **오픈 리다이렉트**가 되어 우리 주소가
+     남의 피싱 링크로 쓰인다. 여기서 바뀌는 것은 «ct 값 하나»뿐이고,
+     그 값도 아래 표에 있는 것만 받는다. (`_shared/bin/bridge_new.sh` 와 같은 판단)
+
+  ☠️ 자동으로 스토어로 보내지 않는다. 사람이 누르게 한다.
+     메타 웹뷰는 스크립트로 일으킨 이동을 조용히 버리고, 자동 이동은 창이 둘 열린다.
+-->
+<style>
+  :root{
+    --bg:#ffffff; --fg:#16181C; --dim:#5b6472; --line:#e3e7ec; --card:#f7f8fa;
+    --accent:#16181C; --accentfg:#ffffff; --amber:#F5A623;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0f1216; --fg:#eef1f5; --dim:#9aa4b2; --line:#232a33; --card:#171c22;
+           --accent:#F5A623; --accentfg:#16181C; }
+  }
+  *{ box-sizing:border-box }
+  body{ margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic",system-ui,sans-serif;
+    line-height:1.65; -webkit-text-size-adjust:100% }
+  .wrap{ max-width:440px; margin:0 auto; padding:40px 20px 56px }
+
+  .kicker{ font-size:13px; color:var(--amber); font-weight:700; letter-spacing:.18em; margin:0 }
+  h1{ font-size:24px; line-height:1.35; margin:8px 0 12px; letter-spacing:-.02em }
+  .lead{ font-size:15px; color:var(--dim); margin:0 0 28px }
+
+  .btn{ display:flex; align-items:center; gap:13px; width:100%; text-decoration:none;
+    border:1.5px solid var(--line); border-radius:14px; padding:16px 18px; margin-bottom:11px;
+    color:var(--fg); background:var(--bg); -webkit-tap-highlight-color:transparent }
+  .btn:active{ background:var(--card) }
+  .btn.me{ border-color:var(--accent); background:var(--accent); color:var(--accentfg) }
+  .btn .ic{ font-size:22px; line-height:1; flex:none }
+  .btn .tx{ flex:1 }
+  .btn b{ display:block; font-size:16.5px; font-weight:700; letter-spacing:-.01em }
+  .btn small{ display:block; font-size:12.5px; opacity:.72; margin-top:2px }
+  .btn .ar{ font-size:17px; opacity:.5; flex:none }
+
+  .note{ font-size:13px; color:var(--dim); margin:14px 2px 0 }
+  .box{ margin-top:30px; padding:16px; background:var(--card); border:1px solid var(--line); border-radius:12px }
+  .box h2{ font-size:14px; margin:0 0 8px }
+  .box p{ font-size:13.5px; color:var(--dim); margin:0 0 12px }
+  .url{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:var(--fg);
+    background:var(--bg); border:1px solid var(--line); border-radius:8px;
+    padding:10px 11px; overflow-x:auto; white-space:nowrap; margin-bottom:10px }
+  .copy{ width:100%; font:inherit; font-size:14px; font-weight:600; background:transparent; color:var(--fg);
+    border:1px solid var(--line); border-radius:9px; padding:11px; cursor:pointer;
+    -webkit-tap-highlight-color:transparent }
+  .copy:active{ background:var(--line) }
+  .ok{ color:var(--amber); font-weight:700 }
+  footer{ margin-top:34px; font-size:12px; color:var(--dim) }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">ROUTE</p>
+  <h1>운동 기록 앱 ROUTE</h1>
+  <p class="lead">
+    오늘 할 운동이 뜨고, 무게와 횟수를 기록합니다.
+    동작마다 영상 가이드가 있습니다. 무료로 쓰실 수 있습니다.
+  </p>
+
+  <div id="btns">
+    <a class="btn" id="ios" href="#" rel="noopener">
+      <span class="ic"></span>
+      <span class="tx"><b>아이폰</b><small>App Store</small></span>
+      <span class="ar">›</span>
+    </a>
+    <a class="btn" id="aos" href="#" rel="noopener">
+      <span class="ic">▶</span>
+      <span class="tx"><b>안드로이드</b><small>Google Play</small></span>
+      <span class="ar">›</span>
+    </a>
+  </div>
+
+  <p class="note" id="note">쓰시는 기기를 눌러 주세요.</p>
+
+  <div class="box">
+    <h2>버튼이 안 열리면</h2>
+    <p>아래 주소를 복사해서 크롬이나 사파리에 붙여 넣어 주세요.</p>
+    <div class="url" id="url"></div>
+    <button class="copy" id="copy">주소 복사하기</button>
+  </div>
+
+  <footer>주식회사 원나우 · ROUTE</footer>
+</div>
+
+<script>
+(function () {
+  // ★ 받는 값은 여기 있는 것만. 모르면 bio 로 본다. (오픈 리다이렉트 방지)
+  var SURFACE = {
+    bio:   { ios: "threads-bio", aos: "threads-bio" },
+    post:  { ios: "threads",     aos: "threads"     },
+    ebook: { ios: "ebook",       aos: "ebook"       }
+  };
+  var key = (new URLSearchParams(location.search).get("s") || "bio").toLowerCase();
+  var s = SURFACE[key] || SURFACE.bio;
+
+  var IOS = "https://apps.apple.com/app/apple-store/id6779021975?pt=128581720&ct="
+          + s.ios + "&mt=8";
+  var AOS = "https://play.google.com/store/apps/details?id=io.wonnow.routefit&referrer="
+          + encodeURIComponent("utm_source=" + s.aos + "&utm_medium=social");
+
+  var a = document.getElementById("ios"), b = document.getElementById("aos");
+  a.href = IOS; b.href = AOS;
+
+  var ua = navigator.userAgent || "";
+  var isIOS = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && "ontouchend" in document);
+  var isAOS = /Android/.test(ua);
+
+  // 맞는 쪽을 위로 올리고 눈에 띄게 한다. ☠️ 다른 쪽을 «숨기지는» 않는다 —
+  //   UA 판별은 틀릴 수 있고, 틀렸는데 안 보이면 그 사람은 못 깐다.
+  var box = document.getElementById("btns");
+  var mine = isAOS ? b : (isIOS ? a : null);
+  if (mine) {
+    mine.classList.add("me");
+    box.insertBefore(mine, box.firstChild);
+    document.getElementById("note").textContent =
+      "쓰시는 기기로 맞춰 뒀습니다. 다른 기기면 아래를 눌러 주세요.";
+  }
+
+  // 복사용 주소 — 내 기기 쪽을 담는다. 못 고르면 이 페이지 주소를 담는다.
+  var COPY = mine ? (isAOS ? AOS : IOS) : location.href.split("#")[0];
+  document.getElementById("url").textContent = COPY;
+
+  var btn = document.getElementById("copy");
+  btn.addEventListener("click", function () {
+    var done = function () {
+      btn.innerHTML = '<span class="ok">복사했습니다</span>';
+      setTimeout(function () { btn.textContent = "주소 복사하기"; }, 2200);
+    };
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = COPY; ta.setAttribute("readonly", "");
+      ta.style.position = "fixed"; ta.style.top = "-1000px";
+      document.body.appendChild(ta);
+      ta.select(); ta.setSelectionRange(0, COPY.length);
+      try { document.execCommand("copy"); done(); }
+      catch (e) {
+        btn.textContent = "주소를 길게 눌러 복사해 주세요";
+        var r = document.createRange();
+        r.selectNodeContents(document.getElementById("url"));
+        var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(COPY).then(done, fallback);
+    } else { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
