@@ -19,6 +19,7 @@
       ?s=bio   프로필 바이오      → threads-bio
       ?s=post  글·댓글            → threads
       ?s=ebook 전자책 안          → ebook
+      ?s=youtube 알쓸운동 (설명란·고정댓글·채널 링크) → youtube  (2026-10-27 총괄 지시 · 채널표의 기존 ct)
     모르는 값이 오면 bio 로 본다.
 
   ☠️ 목적지를 쿼리로 받지 않는다. 받으면 **오픈 리다이렉트**가 되어 우리 주소가
@@ -114,7 +115,8 @@
   var SURFACE = {
     bio:   { ios: "threads-bio", aos: "threads-bio" },
     post:  { ios: "threads",     aos: "threads"     },
-    ebook: { ios: "ebook",       aos: "ebook"       }
+    ebook: { ios: "ebook",       aos: "ebook"       },
+    youtube: { ios: "youtube",   aos: "youtube"     }
   };
   var key = (new URLSearchParams(location.search).get("s") || "bio").toLowerCase();
   var s = SURFACE[key] || SURFACE.bio;
